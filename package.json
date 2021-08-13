@@ -2,9 +2,9 @@
   "name": "nesbaen-wa-bot",
   "version": "1.0.0",
   "description": "Bot whatsapp untuk aplikasi absensi nesbaen",
-  "main": "index.js",
+  "exports": "./index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ."
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,8 @@
   "homepage": "https://github.com/reacto11mecha/nesbaen-wa-bot#readme",
   "dependencies": {
     "@open-wa/wa-automate": "^4.14.1",
+    "dotenv": "^10.0.0",
     "p-queue": "^7.1.0"
-  }
+  },
+  "type": "module"
 }
