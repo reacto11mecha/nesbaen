@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+import "./handler/database.js";
+
 import handlerProc from "./handler/message.js";
 
 let proc;
@@ -25,9 +27,12 @@ async function start(client) {
     proc = handlerProc(client);
 
     const unreadMessages = await client.getAllUnreadMessages();
-    unreadMessages?.forEach(processMessage);
+    // unreadMessages?.forEach(processMessage);
+
+    console.log(unreadMessages);
 
     client.onStateChanged((state) => {
+      console.log(`[State] Current State: ${state}`);
       if (state === "CONFLICT") client.forceRefocus();
     });
 
