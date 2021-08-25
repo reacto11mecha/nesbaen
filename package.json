@@ -1,24 +1,25 @@
 {
-  "name": "nesbaen-wa-bot",
+  "name": "nesbaen",
   "version": "1.0.0",
-  "description": "Bot whatsapp untuk aplikasi absensi nesbaen",
+  "description": "Jangan Lupa Absen ! Ini adalah bot whatsapp untuk absensi",
   "exports": "./index.js",
   "scripts": {
     "start": "node ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reacto11mecha/nesbaen-wa-bot.git"
+    "url": "git+https://github.com/reacto11mecha/nesbaen.git"
   },
   "author": "Ezra Khairan Permana",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/reacto11mecha/nesbaen-wa-bot/issues"
+    "url": "https://github.com/reacto11mecha/nesbaen/issues"
   },
-  "homepage": "https://github.com/reacto11mecha/nesbaen-wa-bot#readme",
+  "homepage": "https://github.com/reacto11mecha/nesbaen#readme",
   "dependencies": {
     "@open-wa/wa-automate": "^4.14.1",
     "dotenv": "^10.0.0",
+    "mongoose": "^6.0.0",
     "p-queue": "^7.1.0"
   },
   "type": "module"
