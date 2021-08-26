@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/reacto11mecha/nesbaen#readme",
   "dependencies": {
-    "@open-wa/wa-automate": "^4.14.1",
+    "@open-wa/wa-automate": "^4.20.1",
     "dotenv": "^10.0.0",
     "libphonenumber-js": "^1.9.24",
     "mongoose": "^6.0.0",
