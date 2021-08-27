@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
-import { isValidPhoneNumber } from "libphonenumber-js";
+import parsePhoneNumber from "libphonenumber-js";
+
+import enum from "../roles.config.js";
 
 import { NameRegex } from "../utils/regex.js";
+
+const { isPossiblePhoneNumber, isValidPhoneNumber } = parsePhoneNumber;
 
 const User = new mongoose.Schema({
   name: {
@@ -15,14 +19,15 @@ const User = new mongoose.Schema({
   roles: [
     {
       type: String,
-      enum: ["admin", "guru", "pengurus", "siswa"],
+      enum,
       default: "siswa",
     },
   ],
   nomorTelepon: {
     type: String,
     validate: {
-      validator: (v) => isValidPhoneNumber(v, "ID"),
+      validator: (v) =>
+        isPossiblePhoneNumber(v, "ID") && isValidPhoneNumber(v, "ID"),
       message: (props) => `${props.value} bukanlah nama yang valid!`,
     },
   },

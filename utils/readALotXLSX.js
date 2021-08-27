@@ -1,5 +1,7 @@
 import XLSX from "xlsx";
 import parsePhoneNumber from "libphonenumber-js";
+import whatsRole from "../utils/whatsRole.js";
+import { NameRegex } from "./regex.js";
 
 import fs from "node:fs";
 import path from "node:path";
@@ -37,10 +39,17 @@ const readXLSX = (file) =>
           `Format tidak sesuai. Judul data harus menggunakan "NAMA SISWA", "NO TELEPON", "ROLE". File: ${file}`
         );
 
+      const roles = whatsRole(d.ROLE);
+      if (roles instanceof Error)
+        reject(`${roles} File: ${file}, Nama Siswa: ${d["NAMA SISWA"].trim()}`);
+
       const reformatted = {
-        name: d["NAMA SISWA"].trim(),
+        name: d["NAMA SISWA"]
+          .toLowerCase()
+          .trim()
+          .replace(/\b(\w)/g, (s) => s.toUpperCase()),
         phoneNumber: d["NO TELEPON"].trim().replace(".", "+"),
-        role: d.ROLE.trim(),
+        roles,
       };
 
       if (
@@ -49,6 +58,11 @@ const readXLSX = (file) =>
       )
         reject(
           `Nomor telepon dari siswa yang bernama '${reformatted.name}' salah. File: ${file}`
+        );
+
+      if (!NameRegex.test(reformatted.name))
+        reject(
+          `Siswa bername ${reformatted.name} namanya salah, coba di cek kembali apakah nama tersebut sudah benar.`
         );
 
       return reformatted;
