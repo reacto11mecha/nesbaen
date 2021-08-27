@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import parsePhoneNumber from "libphonenumber-js";
 
-import enum from "../roles.config.js";
+import enumRole from "../roles.config.js";
 
 import { NameRegex } from "../utils/regex.js";
 
@@ -19,11 +19,11 @@ const User = new mongoose.Schema({
   roles: [
     {
       type: String,
-      enum,
+      enum: enumRole,
       default: "siswa",
     },
   ],
-  nomorTelepon: {
+  phoneNumber: {
     type: String,
     validate: {
       validator: (v) =>
@@ -31,5 +31,7 @@ const User = new mongoose.Schema({
       message: (props) => `${props.value} bukanlah nama yang valid!`,
     },
   },
-  className: Name,
+  className: String,
 });
+
+export default mongoose.model("User", User);
