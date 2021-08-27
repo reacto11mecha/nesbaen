@@ -21,7 +21,8 @@
     "dotenv": "^10.0.0",
     "libphonenumber-js": "^1.9.24",
     "mongoose": "^6.0.0",
-    "p-queue": "^7.1.0"
+    "p-queue": "^7.1.0",
+    "xlsx": "^0.17.1"
   },
   "type": "module"
 }
