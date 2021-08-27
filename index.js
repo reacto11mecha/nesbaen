@@ -15,8 +15,11 @@ const queue = new PQueue({
   autoStart: false,
 });
 
+const checkValidMessage = (message) =>
+  message.type === "chat" && message.body.startsWith(process.env.PREFIX);
+
 const processMessage = (message) => {
-  if (message.type === "chat" && message.body.startsWith(process.env.PREFIX)) {
+  if (checkValidMessage(message)) {
     console.log(`[Pesan] Ada pesan dari : ${message.sender.pushname}`);
     queue.add(() => proc(message));
   }
@@ -27,9 +30,7 @@ async function start(client) {
     proc = handlerProc(client);
 
     const unreadMessages = await client.getAllUnreadMessages();
-    // unreadMessages?.forEach(processMessage);
-
-    console.log(unreadMessages);
+    unreadMessages?.filter(checkValidMessage).forEach(processMessage);
 
     client.onStateChanged((state) => {
       console.log(`[State] Current State: ${state}`);
