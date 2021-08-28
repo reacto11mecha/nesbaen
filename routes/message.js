@@ -121,5 +121,53 @@ ${
     }
   });
 
+  messageHandler.on("delete", async ({ args, client, message, userNumber }) => {
+    const permitted = await isManager({ client, message, userNumber });
+
+    if (permitted.isPermitted) {
+      const valid = await isUUID4({ args, client, message });
+
+      if (valid) {
+        await client.simulateTyping(message.from, true);
+        const absensi = await Absen.findOne({ absen_id: args[0] })
+          .populate("assignator")
+          .lean();
+
+        if (!absensi) {
+          await client.simulateTyping(message.from, false);
+          return await client.reply(
+            message.from,
+            "Absensi tidak ada !",
+            message.id,
+            true
+          );
+        }
+
+        if (!absensi.assignator._id.equals(permitted.user._id)) {
+          await client.simulateTyping(message.from, false);
+          return await client.reply(
+            message.from,
+            "Anda bukan pembuat absen aslinya !",
+            message.id,
+            true
+          );
+        }
+
+        await Absen.deleteOne({
+          absen_id: absensi.absen_id,
+          assignator: absensi.assignator._id,
+        });
+
+        await client.simulateTyping(message.from, false);
+        return await client.reply(
+          message.from,
+          `Berhasil menghapus absen 👍\nID: ${absensi.absen_id}`,
+          message.id,
+          true
+        );
+      }
+    }
+  });
+
   return messageHandler;
 }

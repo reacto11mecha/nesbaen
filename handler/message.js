@@ -45,6 +45,15 @@ const messageHandler = (client) => async (message) => {
         message,
         userNumber,
       });
+    case "del":
+    case "delete":
+    case "hapus":
+      return await handler.emit("delete", {
+        args,
+        client,
+        message,
+        userNumber,
+      });
     default:
       await client.reply(
         from,
