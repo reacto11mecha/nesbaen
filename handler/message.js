@@ -37,6 +37,14 @@ const messageHandler = (client) => async (message) => {
         message,
         userNumber,
       });
+    case "list":
+    case "lists":
+      return await handler.emit("lists", {
+        args,
+        client,
+        message,
+        userNumber,
+      });
     default:
       await client.reply(
         from,

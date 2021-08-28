@@ -17,9 +17,10 @@ const Absen = new mongoose.Schema({
     type: String,
     default: uuidv4,
   },
-  asignnator: {
+  assignator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
   userList: [userListSchema],
   created_at: {
