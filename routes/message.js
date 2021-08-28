@@ -1,7 +1,8 @@
 import EventEmitter from "events";
 
 import Absen from "../models/absen.js";
-import { isStudent, isManager } from "../utils/authorization.js";
+import { isStudent, isManager } from "../validator/authorization.js";
+import { isUUID4 } from "../validator/argumentsValidator.js";
 
 export default function initEmitter() {
   const messageHandler = new EventEmitter();
@@ -10,7 +11,44 @@ export default function initEmitter() {
     const permitted = await isStudent({ client, message, userNumber });
 
     if (permitted.isPermitted) {
-      return await client.reply(message.from, "Test ABSEN !", message.id, true);
+      const valid = await isUUID4({ args, client, message });
+
+      if (valid) {
+        const absensi = await Absen.findOne({ absen_id: args[0] });
+
+        if (!absensi)
+          return await client.reply(
+            message.from,
+            "Absensi tidak ada !",
+            message.id,
+            true
+          );
+
+        const alreadyPresence = absensi.userList.some(({ user_id }) =>
+          user_id.equals(permitted.user._id)
+        );
+
+        if (alreadyPresence)
+          return await client.reply(
+            message.from,
+            "Anda sudah absen sebelumnya.",
+            message.id,
+            true
+          );
+
+        await client.simulateTyping(message.from, true);
+        absensi.userList.push({ user_id: permitted.user._id });
+
+        await absensi.save();
+        await client.simulateTyping(message.from, false);
+
+        return await client.reply(
+          message.from,
+          "Berhasil terabsen 👍",
+          message.id,
+          true
+        );
+      }
     }
   });
 
