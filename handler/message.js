@@ -5,8 +5,8 @@ const GITHUB_URL = "https://github.com/reacto11mecha/nesbaen";
 const handler = emitHandler();
 
 const messageHandler = (client) => async (message) => {
-  const { body, from, id } = message;
-  const userNumber = from.replace("@c.us", "");
+  const { body, from, sender, id } = message;
+  const userNumber = `+${sender.id.replace("@c.us", "")}`;
 
   const command = body
     .slice(process.env.PREFIX.length)
@@ -23,10 +23,20 @@ const messageHandler = (client) => async (message) => {
   switch (command) {
     case "a":
     case "absen":
-      return await handler.emit("absen", { args, client, userNumber });
+      return await handler.emit("absen", {
+        args,
+        client,
+        message,
+        userNumber,
+      });
     case "buat":
+    case "gen":
     case "generate":
-      return await handler.emit("generate", { client, userNumber });
+      return await handler.emit("generate", {
+        client,
+        message,
+        userNumber,
+      });
     default:
       await client.reply(
         from,
