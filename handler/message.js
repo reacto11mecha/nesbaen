@@ -54,12 +54,27 @@ const messageHandler = (client) => async (message) => {
         message,
         userNumber,
       });
+    case "perintah":
+    case "help":
+    case "command":
+    case "commands":
+      return await handler.emit("help", {
+        client,
+        message,
+      });
     default:
       await client.reply(
         from,
         command.length > 0
           ? `Tidak ada perintah yang bernama '${command}'`
-          : `Nesbaen, saya adalah bot absen.\n\nGithub: ${GITHUB_URL}`,
+          : `Nesbaen, saya adalah bot absen.
+
+Untuk perintah lengkap ketik:
+"${process.env.PREFIX} help" (tanpa tanda ").
+
+Sumber Kode: ${GITHUB_URL}
+
+Dibuat oleh Ezra Khairan Permana di bawah lisensi MIT.`,
         id,
         true
       );

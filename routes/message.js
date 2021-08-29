@@ -5,6 +5,41 @@ import { isStudent, isManager } from "../validator/authorization.js";
 import { isUUID4 } from "../validator/argumentsValidator.js";
 import { generateDateString } from "../utils/date.js";
 
+const GITHUB_URL = "https://github.com/reacto11mecha/nesbaen";
+
+const helpReply = `Nesbaen, saya adalah bot absen.
+Prefix: ${process.env.PREFIX}
+
+Bot ini bisa digunakan di chat pribadi atau di grup.
+
+Catatan: Anda harus terdaftar terlebih dahulu. Hubungi host dari bot ini untuk didaftarkan.
+
+Daftar Perintah:
+- absen: Perintah ini adalah untuk absen, diperlukan argumen "id" yang unik. Anda harus memiliki role siswa.
+
+Contoh: ${process.env.PREFIX} absen <id>
+
+- buat: Perintah ini digunakan untuk membuat absen, gunakan secara bijak. Anda harus memiliki role pengurus/guru/admin.
+
+Jika sudah diberikan id uniknya, berikan ke orang/kelas yang dituju.
+
+Contoh: ${process.env.PREFIX} buat
+
+- list: Perintah ini digunakan untuk menampilkan siapa saja yang sudah absen, diperlukan argumen "id" yang unik. Anda harus memiliki role pengurus/guru/admin.
+
+Contoh: ${process.env.PREFIX} list <id>
+
+- hapus: Perintah ini digunakan untuk *menghapus* absen, diperlukan argumen "id" yang unik. Anda harus memiliki role pengurus/guru/admin. Yang bisa menghapus absen adalah orang yang membuatnya.
+
+Catatan: *Hati-hati* dalam menggunakan perintah ini. Sekali terhapus sudah terhapus untuk selamanya.
+
+Contoh: ${process.env.PREFIX} hapus <id>
+
+
+Sumber Kode: ${GITHUB_URL}
+
+Dibuat oleh Ezra Khairan Permana di bawah lisensi MIT.`;
+
 export default function initEmitter() {
   const messageHandler = new EventEmitter();
 
@@ -168,6 +203,12 @@ ${
       }
     }
   });
+
+  messageHandler.on(
+    "help",
+    async ({ client, message }) =>
+      await client.reply(message.from, helpReply, message.id, true)
+  );
 
   return messageHandler;
 }

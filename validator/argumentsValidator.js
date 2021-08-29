@@ -1,7 +1,7 @@
 import { version as uuidVersion, validate as uuidValidate } from "uuid";
 
 const isUUID4 = async ({ args, client, message }) => {
-  const haveArguments = isArgumentExist({ args, client, message });
+  const haveArguments = await isArgumentExist({ args, client, message });
 
   if (!haveArguments) return haveArguments;
 
