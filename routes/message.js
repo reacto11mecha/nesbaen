@@ -15,6 +15,10 @@ Bot ini bisa digunakan di chat pribadi atau di grup.
 Catatan: Anda harus terdaftar terlebih dahulu. Hubungi host dari bot ini untuk didaftarkan.
 
 Daftar Perintah:
+- saya: Perintah ini digunakan untuk mengecek profil diri sendiri.
+
+Contoh: ${process.env.PREFIX} saya
+
 - absen: Perintah ini adalah untuk absen, diperlukan argumen "id" yang unik. Anda harus memiliki role siswa.
 
 Contoh: ${process.env.PREFIX} absen <id>
@@ -209,6 +213,24 @@ ${
     async ({ client, message }) =>
       await client.reply(message.from, helpReply, message.id, true)
   );
+
+  messageHandler.on("me", async ({ client, message, userNumber }) => {
+    const permitted = await isStudent({ client, message, userNumber });
+
+    if (permitted.isPermitted)
+      return await client.reply(
+        message.from,
+        `Profil anda
+
+Nama: ${permitted.user.name}
+${
+  permitted.user.className ? `Kelas: ${permitted.user.className}\n` : "\n"
+}Roles: ${permitted.user.roles.join(", ")}
+Tanggal didaftarkan: ${generateDateString(permitted.user.created_at)}`,
+        message.id,
+        true
+      );
+  });
 
   return messageHandler;
 }

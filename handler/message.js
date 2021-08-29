@@ -62,6 +62,13 @@ const messageHandler = (client) => async (message) => {
         client,
         message,
       });
+    case "me":
+    case "saya":
+      return await handler.emit("me", {
+        client,
+        message,
+        userNumber,
+      });
     default:
       await client.reply(
         from,
