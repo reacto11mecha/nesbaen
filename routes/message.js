@@ -1,9 +1,11 @@
 import EventEmitter from "events";
 
 import Absen from "../models/absen.js";
+import Class from "../models/class.js";
 import { isStudent, isManager } from "../validator/authorization.js";
 import { isUUID4 } from "../validator/argumentsValidator.js";
 import { generateDateString } from "../utils/date.js";
+import { checkUser } from "../utils/permittedOrNot.js";
 
 import { helpReply } from "../common/message.js";
 
@@ -178,21 +180,34 @@ ${
   );
 
   messageHandler.on("me", async ({ client, message, userNumber }) => {
-    const permitted = await isStudent({ client, message, userNumber });
+    const user = await checkUser({ client, message, userNumber });
 
-    if (permitted.isPermitted)
+    if (user) {
+      const gradeClassName = user.className
+        ? await Class.findOne({ _id: user.className.grade }).lean()
+        : null;
+
+      const className = gradeClassName
+        ? gradeClassName.classNames.find((classes) =>
+            classes._id.equals(user.className.gradeName)
+          )
+        : null;
+
       return await client.reply(
         message.from,
         `Profil anda
 
-Nama: ${permitted.user.name}
+Nama: ${user.name}
 ${
-  permitted.user.className ? `Kelas: ${permitted.user.className}\n` : "\n"
-}Roles: ${permitted.user.roles.join(", ")}
-Tanggal didaftarkan: ${generateDateString(permitted.user.created_at)}`,
+  gradeClassName
+    ? `Kelas: ${gradeClassName.gradeName} ${className.name}\n`
+    : "\n"
+}Roles: ${user.roles.join(", ")}
+Tanggal didaftarkan: ${generateDateString(user.created_at)}`,
         message.id,
         true
       );
+    }
   });
 
   return messageHandler;

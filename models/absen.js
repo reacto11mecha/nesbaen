@@ -8,7 +8,7 @@ const userListSchema = new mongoose.Schema({
   },
   precense_time: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
 });
 
@@ -25,7 +25,7 @@ const Absen = new mongoose.Schema({
   userList: [userListSchema],
   created_at: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
 });
 

@@ -5,17 +5,9 @@ const permittedOrNot = (...permittedRole) => async ({
   message,
   userNumber,
 }) => {
-  const user = await getUser(userNumber);
+  const user = await checkUser({ userNumber });
 
-  if (!user) {
-    await client.reply(
-      message.from,
-      "Anda belum terdaftar !",
-      message.id,
-      true
-    );
-    return false;
-  }
+  if (!user) return false;
 
   const isPermitted = permittedRole.some((role) => user.roles.includes(role));
 
@@ -32,7 +24,24 @@ const permittedOrNot = (...permittedRole) => async ({
   return { isPermitted, user };
 };
 
+const checkUser = async ({ userNumber, client, message }) => {
+  const user = await getUser(userNumber);
+
+  if (!user) {
+    await client.reply(
+      message.from,
+      "Anda belum terdaftar !",
+      message.id,
+      true
+    );
+    return false;
+  }
+
+  return user;
+};
+
 const getUser = async (phoneNumber) =>
   await User.findOne({ phoneNumber }).lean();
 
 export default permittedOrNot;
+export { checkUser, getUser };

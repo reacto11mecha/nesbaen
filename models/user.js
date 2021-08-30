@@ -31,10 +31,19 @@ const User = new mongoose.Schema({
       message: (props) => `${props.value} bukanlah nama yang valid!`,
     },
   },
-  className: String,
+  className: {
+    grade: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Class",
+    },
+    gradeName: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Class.classNames",
+    },
+  },
   created_at: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
 });
 
