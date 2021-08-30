@@ -1,6 +1,5 @@
 import emitHandler from "../routes/message.js";
-
-const GITHUB_URL = "https://github.com/reacto11mecha/nesbaen";
+import { botInfo } from "../common/message.js";
 
 const handler = emitHandler();
 
@@ -74,14 +73,7 @@ const messageHandler = (client) => async (message) => {
         from,
         command.length > 0
           ? `Tidak ada perintah yang bernama '${command}'`
-          : `Nesbaen, saya adalah bot absen.
-
-Untuk perintah lengkap ketik:
-"${process.env.PREFIX} help" (tanpa tanda ").
-
-Sumber Kode: ${GITHUB_URL}
-
-Dibuat oleh Ezra Khairan Permana di bawah lisensi MIT.`,
+          : botInfo,
         id,
         true
       );
