@@ -89,3 +89,5 @@ Untuk menjalankan botnya, pastikan mongodb sudah hidup dan url-nya benar.
 ```sh
 npm start
 ```
+
+Jika baru pertama kali menjalankan, scan barcode di terminal untuk dihubungkan ke whatsapp di handphone.
