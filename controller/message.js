@@ -36,7 +36,10 @@ export default {
           true
         );
       }
-      absensi.userList.push({ user_id: user._id });
+      absensi.userList.push({
+        user_id: user._id,
+        precense_time: new Date(Number(`${message.t}000`)),
+      });
 
       await absensi.save();
 
@@ -52,7 +55,10 @@ export default {
 
   generate: async ({ client, message, user }) => {
     await client.simulateTyping(message.from, true);
-    const absensi = new Absen({ assignator: user._id });
+    const absensi = new Absen({
+      assignator: user._id,
+      created_at: new Date(Number(`${message.t}000`)),
+    });
 
     await absensi.save();
 
@@ -104,7 +110,6 @@ export default {
 
   lists: async ({ args, client, message }) => {
     await client.simulateTyping(message.from, true);
-
     const valid = await isUUID4({ args, client, message });
 
     if (valid) {
