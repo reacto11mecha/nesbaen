@@ -8,15 +8,13 @@ import controller from "../controller/message.js";
 export default function initEmitter() {
   const messageHandler = new EventEmitter();
 
-  messageHandler.on("absen", isStudent(controller.absen));
-
-  messageHandler.on("generate", isManager(controller.generate));
-
-  messageHandler.on("lists", isManager(controller.lists));
-
-  messageHandler.on("delete", isManager(controller.delete));
-
   messageHandler.on("me", controller.me);
+
+  messageHandler.on("absen", isStudent(controller.absen));
+  messageHandler.on("generate", isManager(controller.generate));
+  messageHandler.on("list-created", isManager(controller.listCreated));
+  messageHandler.on("lists", isManager(controller.lists));
+  messageHandler.on("delete", isManager(controller.delete));
 
   messageHandler.on(
     "help",

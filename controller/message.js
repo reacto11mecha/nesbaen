@@ -7,43 +7,46 @@ import { checkUser } from "../utils/permittedOrNot.js";
 
 export default {
   absen: async ({ args, client, message, user }) => {
+    await client.simulateTyping(message.from, true);
     const valid = await isUUID4({ args, client, message });
 
     if (valid) {
       const absensi = await Absen.findOne({ absen_id: args[0] });
 
-      if (!absensi)
+      if (!absensi) {
+        await client.simulateTyping(message.from, false);
         return await client.reply(
           message.from,
           "Absensi tidak ada !",
           message.id,
           true
         );
+      }
 
       const alreadyPresence = absensi.userList.some(({ user_id }) =>
         user_id.equals(user._id)
       );
 
-      if (alreadyPresence)
+      if (alreadyPresence) {
+        await client.simulateTyping(message.from, false);
         return await client.reply(
           message.from,
           "Anda sudah absen sebelumnya.",
           message.id,
           true
         );
-
-      await client.simulateTyping(message.from, true);
+      }
       absensi.userList.push({ user_id: user._id });
 
       await absensi.save();
-      await client.simulateTyping(message.from, false);
 
-      return await client.reply(
+      await client.reply(
         message.from,
         "Berhasil terabsen 👍",
         message.id,
         true
       );
+      return await client.simulateTyping(message.from, false);
     }
   },
 
@@ -52,7 +55,6 @@ export default {
     const absensi = new Absen({ assignator: user._id });
 
     await absensi.save();
-    await client.simulateTyping(message.from, false);
 
     await client.reply(
       message.from,
@@ -61,17 +63,51 @@ export default {
       true
     );
 
-    return await client.sendText(
+    await client.sendText(
       message.from,
       `${process.env.PREFIX} absen ${absensi.absen_id}`
     );
+    return await client.simulateTyping(message.from, false);
+  },
+
+  listCreated: async ({ client, message, user }) => {
+    await client.simulateTyping(message.from, true);
+
+    const absensi = await Absen.find({ assignator: user._id }).lean();
+
+    if (absensi.length === 0) {
+      await client.simulateTyping(message.from, false);
+      return await client.reply(
+        message.from,
+        "Anda belum pernah membuat daftar absensi.",
+        message.id,
+        true
+      );
+    }
+
+    await client.reply(
+      message.from,
+      `Daftar absen yang dibuat oleh anda, ${user.name}`,
+      message.id,
+      true
+    );
+
+    for (const absen of absensi) {
+      await client.sendText(
+        message.from,
+        `${absen.absen_id}  |  ${generateDateString(absen.created_at)}`
+      );
+    }
+
+    return await client.simulateTyping(message.from, false);
   },
 
   lists: async ({ args, client, message }) => {
+    await client.simulateTyping(message.from, true);
+
     const valid = await isUUID4({ args, client, message });
 
     if (valid) {
-      await client.simulateTyping(message.from, true);
       const absensi = await Absen.findOne({ absen_id: args[0] })
         .populate("userList.user_id")
         .populate("assignator")
@@ -108,10 +144,10 @@ ${
   },
 
   delete: async ({ args, client, message, user }) => {
+    await client.simulateTyping(message.from, true);
     const valid = await isUUID4({ args, client, message });
 
     if (valid) {
-      await client.simulateTyping(message.from, true);
       const absensi = await Absen.findOne({ absen_id: args[0] })
         .populate("assignator")
         .lean();
@@ -141,17 +177,18 @@ ${
         assignator: absensi.assignator._id,
       });
 
-      await client.simulateTyping(message.from, false);
-      return await client.reply(
+      await client.reply(
         message.from,
         `Berhasil menghapus absen 👍\nID: ${absensi.absen_id}`,
         message.id,
         true
       );
+      return await client.simulateTyping(message.from, false);
     }
   },
 
   me: async ({ client, message, userNumber }) => {
+    await client.simulateTyping(message.from, true);
     const user = await checkUser({ client, message, userNumber });
 
     if (user) {
@@ -165,7 +202,7 @@ ${
           )
         : null;
 
-      return await client.reply(
+      await client.reply(
         message.from,
         `Profil anda
 
@@ -179,6 +216,7 @@ Tanggal didaftarkan: ${generateDateString(user.created_at)}`,
         message.id,
         true
       );
+      return await client.simulateTyping(message.from, false);
     }
   },
 };

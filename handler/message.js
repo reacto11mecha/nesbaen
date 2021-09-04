@@ -44,6 +44,14 @@ const messageHandler = (client) => async (message) => {
         message,
         userNumber,
       });
+    case "created":
+    case "terbuat":
+    case "absen-terbuat":
+      return await handler.emit("list-created", {
+        client,
+        message,
+        userNumber,
+      });
     case "del":
     case "delete":
     case "hapus":
@@ -69,6 +77,7 @@ const messageHandler = (client) => async (message) => {
         userNumber,
       });
     default:
+      await client.simulateTyping(message.from, true);
       await client.reply(
         from,
         command.length > 0
@@ -77,6 +86,7 @@ const messageHandler = (client) => async (message) => {
         id,
         true
       );
+      await client.simulateTyping(message.from, false);
   }
 
   return true;

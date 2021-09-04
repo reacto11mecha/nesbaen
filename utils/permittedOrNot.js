@@ -25,6 +25,7 @@ const checkUser = async ({ userNumber, client, message }) => {
   const user = await getUser(userNumber);
 
   if (!user) {
+    await client.simulateTyping(message.from, false);
     await client.reply(
       message.from,
       "Anda belum terdaftar !",

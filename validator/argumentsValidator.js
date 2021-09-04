@@ -8,6 +8,7 @@ const isUUID4 = async ({ args, client, message }) => {
   const isValidUUID4 = uuidValidate(args[0]) && uuidVersion(args[0]) === 4;
 
   if (!isValidUUID4) {
+    await client.simulateTyping(message.from, false);
     await client.reply(
       message.from,
       "Id absen yang dimasukkan tidak valid !",
