@@ -1,10 +1,7 @@
 import User from "../models/user.js";
 
-const permittedOrNot = (...permittedRole) => async ({
-  client,
-  message,
-  userNumber,
-}) => {
+const permittedOrNot = (...permittedRole) => (callback) => async (miscData) => {
+  const { client, message, userNumber } = miscData;
   const user = await checkUser({ userNumber });
 
   if (!user) return false;
@@ -21,7 +18,7 @@ const permittedOrNot = (...permittedRole) => async ({
     return false;
   }
 
-  return { isPermitted, user };
+  return await callback({ ...miscData, user });
 };
 
 const checkUser = async ({ userNumber, client, message }) => {

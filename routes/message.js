@@ -1,18 +1,20 @@
 import EventEmitter from "events";
 
+import { isStudent, isManager } from "../validator/authorization.js";
+
 import { helpReply } from "../common/message.js";
 import controller from "../controller/message.js";
 
 export default function initEmitter() {
   const messageHandler = new EventEmitter();
 
-  messageHandler.on("absen", controller.absen);
+  messageHandler.on("absen", isStudent(controller.absen));
 
-  messageHandler.on("generate", controller.generate);
+  messageHandler.on("generate", isManager(controller.generate));
 
-  messageHandler.on("lists", controller.lists);
+  messageHandler.on("lists", isManager(controller.lists));
 
-  messageHandler.on("delete", controller.delete);
+  messageHandler.on("delete", isManager(controller.delete));
 
   messageHandler.on("me", controller.me);
 

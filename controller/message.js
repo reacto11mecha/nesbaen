@@ -1,110 +1,98 @@
 import Absen from "../models/absen.js";
 import Class from "../models/class.js";
 
-import { isStudent, isManager } from "../validator/authorization.js";
 import { isUUID4 } from "../validator/argumentsValidator.js";
 import { generateDateString } from "../utils/date.js";
 import { checkUser } from "../utils/permittedOrNot.js";
 
 export default {
-  absen: async ({ args, client, message, userNumber }) => {
-    const permitted = await isStudent({ client, message, userNumber });
+  absen: async ({ args, client, message, user }) => {
+    const valid = await isUUID4({ args, client, message });
 
-    if (permitted.isPermitted) {
-      const valid = await isUUID4({ args, client, message });
+    if (valid) {
+      const absensi = await Absen.findOne({ absen_id: args[0] });
 
-      if (valid) {
-        const absensi = await Absen.findOne({ absen_id: args[0] });
-
-        if (!absensi)
-          return await client.reply(
-            message.from,
-            "Absensi tidak ada !",
-            message.id,
-            true
-          );
-
-        const alreadyPresence = absensi.userList.some(({ user_id }) =>
-          user_id.equals(permitted.user._id)
-        );
-
-        if (alreadyPresence)
-          return await client.reply(
-            message.from,
-            "Anda sudah absen sebelumnya.",
-            message.id,
-            true
-          );
-
-        await client.simulateTyping(message.from, true);
-        absensi.userList.push({ user_id: permitted.user._id });
-
-        await absensi.save();
-        await client.simulateTyping(message.from, false);
-
+      if (!absensi)
         return await client.reply(
           message.from,
-          "Berhasil terabsen 👍",
+          "Absensi tidak ada !",
           message.id,
           true
         );
-      }
-    }
-  },
 
-  generate: async ({ client, message, userNumber }) => {
-    const permitted = await isManager({ client, message, userNumber });
+      const alreadyPresence = absensi.userList.some(({ user_id }) =>
+        user_id.equals(user._id)
+      );
 
-    if (permitted.isPermitted) {
+      if (alreadyPresence)
+        return await client.reply(
+          message.from,
+          "Anda sudah absen sebelumnya.",
+          message.id,
+          true
+        );
+
       await client.simulateTyping(message.from, true);
-      const absensi = new Absen({ assignator: permitted.user._id });
+      absensi.userList.push({ user_id: user._id });
 
       await absensi.save();
       await client.simulateTyping(message.from, false);
 
-      await client.reply(
+      return await client.reply(
         message.from,
-        "Salin perintah absen di bawah ini, kirimkan ke teman anda.",
+        "Berhasil terabsen 👍",
         message.id,
         true
-      );
-
-      return await client.sendText(
-        message.from,
-        `${process.env.PREFIX} absen ${absensi.absen_id}`
       );
     }
   },
 
-  lists: async ({ args, client, message, userNumber }) => {
-    const permitted = await isManager({ client, message, userNumber });
+  generate: async ({ client, message, user }) => {
+    await client.simulateTyping(message.from, true);
+    const absensi = new Absen({ assignator: user._id });
 
-    if (permitted.isPermitted) {
-      const valid = await isUUID4({ args, client, message });
+    await absensi.save();
+    await client.simulateTyping(message.from, false);
 
-      if (valid) {
-        await client.simulateTyping(message.from, true);
-        const absensi = await Absen.findOne({ absen_id: args[0] })
-          .populate("userList.user_id")
-          .populate("assignator")
-          .lean();
+    await client.reply(
+      message.from,
+      "Salin perintah absen di bawah ini, kirimkan ke teman anda.",
+      message.id,
+      true
+    );
 
-        if (!absensi) {
-          await client.simulateTyping(message.from, false);
-          return await client.reply(
-            message.from,
-            "Absensi tidak ada !",
-            message.id,
-            true
-          );
-        }
+    return await client.sendText(
+      message.from,
+      `${process.env.PREFIX} absen ${absensi.absen_id}`
+    );
+  },
 
+  lists: async ({ args, client, message }) => {
+    const valid = await isUUID4({ args, client, message });
+
+    if (valid) {
+      await client.simulateTyping(message.from, true);
+      const absensi = await Absen.findOne({ absen_id: args[0] })
+        .populate("userList.user_id")
+        .populate("assignator")
+        .lean();
+
+      if (!absensi) {
         await client.simulateTyping(message.from, false);
         return await client.reply(
           message.from,
-          `LIST ABSENSI\n\nAbsen dibuat oleh: ${
-            absensi.assignator.name
-          }\nTanggal dibuat: ${generateDateString(absensi.created_at)}
+          "Absensi tidak ada !",
+          message.id,
+          true
+        );
+      }
+
+      await client.simulateTyping(message.from, false);
+      return await client.reply(
+        message.from,
+        `LIST ABSENSI\n\nAbsen dibuat oleh: ${
+          absensi.assignator.name
+        }\nTanggal dibuat: ${generateDateString(absensi.created_at)}
 
 ${
   absensi.userList.length > 0
@@ -113,58 +101,53 @@ ${
       )}`
     : "Belum ada yang absen."
 }`.trim(),
-          message.id,
-          true
-        );
-      }
+        message.id,
+        true
+      );
     }
   },
 
-  delete: async ({ args, client, message, userNumber }) => {
-    const permitted = await isManager({ client, message, userNumber });
+  delete: async ({ args, client, message, user }) => {
+    const valid = await isUUID4({ args, client, message });
 
-    if (permitted.isPermitted) {
-      const valid = await isUUID4({ args, client, message });
+    if (valid) {
+      await client.simulateTyping(message.from, true);
+      const absensi = await Absen.findOne({ absen_id: args[0] })
+        .populate("assignator")
+        .lean();
 
-      if (valid) {
-        await client.simulateTyping(message.from, true);
-        const absensi = await Absen.findOne({ absen_id: args[0] })
-          .populate("assignator")
-          .lean();
-
-        if (!absensi) {
-          await client.simulateTyping(message.from, false);
-          return await client.reply(
-            message.from,
-            "Absensi tidak ada !",
-            message.id,
-            true
-          );
-        }
-
-        if (!absensi.assignator._id.equals(permitted.user._id)) {
-          await client.simulateTyping(message.from, false);
-          return await client.reply(
-            message.from,
-            "Anda bukan pembuat absen aslinya !",
-            message.id,
-            true
-          );
-        }
-
-        await Absen.deleteOne({
-          absen_id: absensi.absen_id,
-          assignator: absensi.assignator._id,
-        });
-
+      if (!absensi) {
         await client.simulateTyping(message.from, false);
         return await client.reply(
           message.from,
-          `Berhasil menghapus absen 👍\nID: ${absensi.absen_id}`,
+          "Absensi tidak ada !",
           message.id,
           true
         );
       }
+
+      if (!absensi.assignator._id.equals(user._id)) {
+        await client.simulateTyping(message.from, false);
+        return await client.reply(
+          message.from,
+          "Anda bukan pembuat absen aslinya !",
+          message.id,
+          true
+        );
+      }
+
+      await Absen.deleteOne({
+        absen_id: absensi.absen_id,
+        assignator: absensi.assignator._id,
+      });
+
+      await client.simulateTyping(message.from, false);
+      return await client.reply(
+        message.from,
+        `Berhasil menghapus absen 👍\nID: ${absensi.absen_id}`,
+        message.id,
+        true
+      );
     }
   },
 
