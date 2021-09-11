@@ -35,6 +35,13 @@ Contoh: ${process.env.PREFIX} buat
 
 Contoh: ${process.env.PREFIX} list <id>
 
+- terbuat: Perintah ini digunakan untuk mendapatkan list daftar absen yang pernah dibuat oleh anda. Diperlukan role pengurus/guru/admin. List absensi bisa didapatkan oleh orang yang membuat beberapa absen sebelumnya.
+
+Misal
+"A" telah membuat 3 absen, jika "A" memanggil perintah ini maka dia bisa mendapatkan daftar 3 absen yang ia pernah buat sebelumnya.  
+
+Contoh: ${process.env.PREFIX} terbuat
+
 - hapus: Perintah ini digunakan untuk *menghapus* absen, diperlukan argumen "id" yang unik. Anda harus memiliki role pengurus/guru/admin. Yang bisa menghapus absen adalah orang yang membuatnya.
 
 Catatan: *Hati-hati* dalam menggunakan perintah ini. Sekali terhapus sudah terhapus untuk selamanya.
