@@ -31,6 +31,9 @@ Berikut daftar perintah yang sudah dibuat.
 |       hapus       |                                Perintah ini digunakan untuk _menghapus_ absen, diperlukan argumen "id" yang unik. <br>Anda harus memiliki role pengurus/guru/admin. <br>Yang bisa menghapus absen adalah orang yang membuatnya.<br><br>Catatan: **Hati-hati** dalam menggunakan perintah ini. Sekali terhapus sudah terhapus untuk selamanya.                                 | N# hapus <id> |
 
 Atau gunakan `N# help` pada saat bot sudah hidup.
+  
+## DEPLOY HEROKUAPP
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/reacto11mecha/nesbaen/)
 
 ### Cloning dari Github
 
