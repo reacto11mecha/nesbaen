@@ -3,21 +3,10 @@ import Class from "../models/class.js";
 import getUsersData from "../utils/readALotXLSX.js";
 import currentAvailableClass from "./availableClass.js";
 
-const getRemappedUser = async () => {
-  let penampung = [];
-  const data = await getUsersData();
-
-  data.forEach((item) => {
-    penampung = [...penampung, ...item];
-  });
-
-  return penampung;
-};
-
 const proceedUser = async () =>
   await User.find().then(async (data) => {
     if (data.length === 0) {
-      const allUsers = await getRemappedUser();
+      const allUsers = await getUsersData();
 
       User.insertMany(allUsers)
         .then(() => console.log("[DB] User ditambahkan"))

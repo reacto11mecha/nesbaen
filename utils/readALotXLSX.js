@@ -37,15 +37,15 @@ const readXLSX = (file) =>
 
 export default async function readXLSXes() {
   try {
-    let penampung = [];
+    let users = [];
 
     for (const file of files) {
       const data = await readXLSX(file);
 
-      penampung = [...penampung, data];
+      users = [...users, data];
     }
 
-    return penampung;
+    return users.reduce((curr, acc) => curr.concat(acc));
   } catch (e) {
     console.log(e);
     process.exit();
