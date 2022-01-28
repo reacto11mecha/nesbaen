@@ -2,8 +2,11 @@ node_modules/
 logs/
 .env
 sensitive/
-
 # managed by open-wa
 **.data.json
 **.node-persist**
+# end managed by open-wa
+
+# managed by open-wa
+**_IGNORE_**
 # end managed by open-wa

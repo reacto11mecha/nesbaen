@@ -17,13 +17,13 @@
   },
   "homepage": "https://github.com/reacto11mecha/nesbaen#readme",
   "dependencies": {
-    "@open-wa/wa-automate": "^4.20.6",
-    "dotenv": "^10.0.0",
-    "libphonenumber-js": "^1.9.24",
-    "mongoose": "^6.0.0",
+    "@open-wa/wa-automate": "^4.30.7",
+    "dotenv": "^14.3.2",
+    "libphonenumber-js": "^1.9.46",
+    "mongoose": "^6.1.8",
     "p-queue": "^7.1.0",
     "uuid": "^8.3.2",
-    "xlsx": "^0.17.1"
+    "xlsx": "^0.17.5"
   },
   "type": "module",
   "keywords": [
