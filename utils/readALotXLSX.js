@@ -4,7 +4,6 @@ import studentSorter from "../common/studentSorter.js";
 import teacherSorter from "../common/teacherSorter.js";
 
 import fs from "node:fs";
-import path from "node:path";
 
 const sensitiveDIR = new URL("../sensitive", import.meta.url);
 const files = fs
@@ -13,7 +12,7 @@ const files = fs
 
 const readXLSX = (file) =>
   new Promise(async (resolve, reject) => {
-    const filePath = path.join(sensitiveDIR.pathname, file);
+    const filePath = new URL(`../sensitive/${file}`, import.meta.url);
     const sheetName = file.replace(".xlsx", "");
 
     const workbook = XLSX.readFile(filePath);
