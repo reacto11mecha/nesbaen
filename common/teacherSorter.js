@@ -1,9 +1,9 @@
 import parsePhoneNumber from "libphonenumber-js";
-import { NameRegex, xlsxSheetSplitter } from "../utils/regex.js";
+import { NameRegex } from "../utils/regex.js";
 
 const { isPossiblePhoneNumber, isValidPhoneNumber } = parsePhoneNumber;
 
-const teacherSorter = (reject) => (d) => {
+const teacherSorter = (reject, file) => (d) => {
   const keys = Object.keys(d);
 
   if (!keys.includes("NAMA GURU") | !keys.includes("NO TELEPON"))

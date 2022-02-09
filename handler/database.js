@@ -10,7 +10,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(async (db) => {
+  .then(async () => {
     console.log("DB CONNECTED");
     await initialize();
   })

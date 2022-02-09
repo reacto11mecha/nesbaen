@@ -1,4 +1,4 @@
-import { create, Client } from "@open-wa/wa-automate";
+import { create } from "@open-wa/wa-automate";
 import PQueue from "p-queue";
 import dotenv from "dotenv";
 

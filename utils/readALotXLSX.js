@@ -12,27 +12,33 @@ const files = fs
   .filter((file) => file.endsWith(".xlsx"));
 
 const readXLSX = (file) =>
-  new Promise(async (resolve, reject) => {
-    const filePath = path.join(sensitiveDIR.pathname, file);
-    const sheetName = file.replace(".xlsx", "");
+  new Promise((resolve, reject) => {
+    (async () => {
+      const filePath = path.join(sensitiveDIR.pathname, file);
+      const sheetName = file.replace(".xlsx", "");
 
-    const workbook = XLSX.readFile(filePath);
-    if (!workbook.SheetNames.includes(sheetName))
-      reject(
-        `Format tidak sesuai. Nama sheet harus sama dengan nama file ! File: ${file}`
+      const workbook = XLSX.readFile(filePath);
+      if (!workbook.SheetNames.includes(sheetName))
+        reject(
+          `Format tidak sesuai. Nama sheet harus sama dengan nama file ! File: ${file}`
+        );
+
+      const worksheet = workbook.Sheets[sheetName];
+      const data = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+
+      const isTeacher = sheetName === "GURU";
+      const sSorter = !isTeacher
+        ? await studentSorter(sheetName, reject, file)
+        : null;
+
+      const cleanData = data.map(
+        isTeacher ? teacherSorter(reject, file) : sSorter
       );
 
-    const worksheet = workbook.Sheets[sheetName];
-    const data = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+      const sorted = cleanData.sort((a, b) => a.name.localeCompare(b.name));
 
-    const isTeacher = sheetName === "GURU";
-    const sSorter = !isTeacher ? await studentSorter(sheetName, reject) : null;
-
-    const cleanData = data.map(isTeacher ? teacherSorter(reject) : sSorter);
-
-    const sorted = cleanData.sort((a, b) => a.name.localeCompare(b.name));
-
-    resolve(sorted);
+      resolve(sorted);
+    })();
   });
 
 export default async function readXLSXes() {

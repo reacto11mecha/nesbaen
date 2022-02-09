@@ -31,14 +31,11 @@ const konversiBulan = (number) => {
 
 const updateTime = (t) => (t < 10 ? "0" + t : t);
 
-const generateDateString = (time) => {
-  const date = new Date(time);
-
-  return `${time.getDate()} ${konversiBulan(
+const generateDateString = (time) =>
+  `${time.getDate()} ${konversiBulan(
     time.getMonth()
   )} ${time.getFullYear()} ${updateTime(time.getHours())}:${updateTime(
     time.getMinutes()
   )}:${updateTime(time.getSeconds())}`;
-};
 
 export { konversiBulan, updateTime, generateDateString };

@@ -6,7 +6,7 @@ import Class from "../models/class.js";
 
 const { isPossiblePhoneNumber, isValidPhoneNumber } = parsePhoneNumber;
 
-const studentSorter = async (sheetName, reject) => {
+const studentSorter = async (sheetName, reject, file) => {
   const splittedSheetname = sheetName.split(xlsxSheetSplitter);
 
   const gradeClass = await Class.findOne({
