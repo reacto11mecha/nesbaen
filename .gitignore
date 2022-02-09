@@ -10,3 +10,7 @@ sensitive/
 # managed by open-wa
 **_IGNORE_**
 # end managed by open-wa
+
+# eslint stuff
+eslint_report.json
+.eslintcache
