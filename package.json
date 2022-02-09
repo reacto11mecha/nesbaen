@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node .",
     "lint": "eslint .",
+    "lint:report": "eslint --output-file eslint_report.json --format json .",
     "prepare": "husky install"
   },
   "repository": {
