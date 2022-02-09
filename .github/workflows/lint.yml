@@ -3,11 +3,7 @@ name: ES Lint
 on:
   pull_request:
     types: [opened, synchronize]
-    paths:
-      - "packages/**/*"
   push:
-    paths:
-      - "packages/**/*"
 
 jobs:
   lint:
