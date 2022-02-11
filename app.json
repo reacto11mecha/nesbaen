@@ -1,0 +1,10 @@
+{
+  "name": "nesbaen",
+  "description": "nesbaen",
+  "repository": "https://github.com/reacto11mecha/nesbaen",
+  "author": "Ezra Khairan Permana",
+  "keywords": ["nodejs", "bot", "whatsapp bot", "whatsapp-bot-nodejs", "nodejs-bot", "javascript", "whatsapp automation"],
+  "buildpacks": [{
+    "url": "heroku/nodejs"
+  }]
+}
