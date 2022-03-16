@@ -31,9 +31,6 @@ Berikut daftar perintah yang sudah dibuat.
 |       hapus       |                                Perintah ini digunakan untuk _menghapus_ absen, diperlukan argumen "id" yang unik. <br>Anda harus memiliki role pengurus/guru/admin. <br>Yang bisa menghapus absen adalah orang yang membuatnya.<br><br>Catatan: **Hati-hati** dalam menggunakan perintah ini. Sekali terhapus sudah terhapus untuk selamanya.                                 | N# hapus <id> |
 
 Atau gunakan `N# help` pada saat bot sudah hidup.
-  
-## DEPLOY HEROKUAPP
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/reacto11mecha/nesbaen/)
 
 ### Cloning dari Github
 
@@ -95,3 +92,39 @@ npm start
 ```
 
 Jika baru pertama kali menjalankan, scan barcode di terminal untuk dihubungkan ke whatsapp di handphone.
+
+### Contoh Pemakaian
+
+Ini adalah contoh pemakaian dari nesbaen, dibawah ini screenshot pemakaiannya. Pertama, pemanggilan bot menggunakan `N#` biasa, akan menampilkan perintah yang kurang lebih sama seperti `N# help`.
+
+![Memanggil bot dengan prefix yang valid](./assets/SS1.png)
+
+Mengecek profil diri sendiri menggunakan `N# saya`. Jika tidak terdaftar maka tidak akan menampilkan profil dan akan mengirimkan bahwa yang mengirimkan pesan tidak terdaftar.
+
+![Mengecek profil apakah sudah terdaftar atau belum](./assets/SS2.png)
+
+Jika memiliki role pengurus/guru/admin maka bisa menggunakan perintah `buat` untuk membuat absen, nanti akan dikirimkan pesan berupa absen dan id dari absennya.
+
+![Membuat absensi baru](./assets/SS3.png)
+
+Karena pesan sebelumnya sudah mengirimkan pesan absen beserta id nya. Maka dengan mudah kita tinggal menyalin atau meneruskan pesannya ke bot.
+
+![Absensi ke bot](./assets/SS4.png)
+
+Jika kamu telah membuat absen sebagai role yang sudah disebutkan sebelumnya dengan nomor telepon yang sama, kamu bisa mengecek absen yang sudah-sudah sebelumnya dengan menggunakan `N# terbuat`.
+
+![Cek daftar-daftar absensi yang telah dibuat sebelumnya](./assets/SS5.png)
+
+Jika sebelumnya itu absen menggunakan id yang telah diberikan, orang dengan role yang sudah disebutkan bisa mengecek siapa saja yang sudah absen dengan id tertentu. Gunakan `N# list <id>` untuk mengecek siapa saja yang sudah absen, contohnya seperti dibawah ini.
+
+![Mengecek siapa saja yang sudah absen dengan id tertentu](./assets/SS6.png)
+
+Menghapus absensi yang sudah dibuat bisa menggunakan `N# hapus <id>`. Yang bisa menghapus adalah orang yang memiliki ketiga role khusus dan orang yang membuat absensi dengan id yang sama.
+
+![Menghapus absensi](./assets/SS7.png)
+
+### Deploy ke Heroku
+
+Jika ingin mendeploy ke heroku, klik tombol dibawah ini.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/reacto11mecha/nesbaen/)
