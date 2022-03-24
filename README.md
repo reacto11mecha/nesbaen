@@ -128,3 +128,6 @@ Menghapus absensi yang sudah dibuat bisa menggunakan `N# hapus <id>`. Yang bisa 
 Jika ingin mendeploy ke heroku, klik tombol dibawah ini.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/reacto11mecha/nesbaen/)
+  
+### Mengubah Worker Heroku
+![Untuk user heroku untuk mengubah worker nya di resources](https://fakhri-hosting.codplay.repl.co/images/1648165293890.png)
